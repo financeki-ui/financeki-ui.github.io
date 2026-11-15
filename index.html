@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="cs"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>Žádost o proplacení nákladu</title>
+
+<style>
+  body { margin:0; padding:0; background:#f2f1ee; }
+  #main-card, #success-card { width:100% !important; max-width:600px; }
+  @media (max-width: 520px) {
+    #main-card td, #success-card td { padding-left:20px !important; padding-right:20px !important; }
+    #main-card table td { padding-left:0 !important; padding-right:0 !important; }
+    #main-card table table td { padding-left:16px !important; padding-right:16px !important; }
+  }
+  .req { color:#b3261e; }
+  button[disabled] { opacity:0.6; cursor:wait !important; }
+</style>
+</head>
+<body>
+<form id="root-form" style="background:#f2f1ee;padding:32px 12px;font-family:Arial,Helvetica,sans-serif;display:block;">
+  <!-- ochrana proti spamu: skryté pole, které člověk nevyplní -->
+  <input type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;">
+  <span style="display:none;font-size:1px;color:#f2f1ee;line-height:1px;max-height:0;max-width:0;opacity:0;overflow:hidden;">Šablona pro zaslání faktury/účtenky k proplacení – vyplňte údaje níže</span>
+  <table id="main-card" role="presentation" cellpadding="0" cellspacing="0" border="0" align="center" width="600" style="width:600px;max-width:600px;margin:0 auto;background:#ffffff;border:1px solid #e4e2dc;">
+    <tbody><tr>
+      <td style="padding:36px 40px 8px 40px;">
+        <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+          <tbody><tr>
+            <td style="font-size:13px;letter-spacing:0.08em;text-transform:uppercase;color:#8a8578;font-family:Arial,Helvetica,sans-serif;padding-bottom:10px;">Interní formulář · Proplacení nákladu</td>
+          </tr>
+          <tr>
+            <td style="font-size:28px;line-height:1.2;font-weight:700;color:#1c1b18;font-family:Arial,Helvetica,sans-serif;padding-bottom:20px;">Žádost o proplacení faktury / účtenky</td>
+          </tr>
+          <tr>
+            <td style="font-size:14px;line-height:1.6;color:#4a473f;font-family:Arial,Helvetica,sans-serif;padding-bottom:8px;">
+              Před odesláním prosím vyplňte všechna pole označená <span class="req">*</span> a přiložte fakturu nebo účtenku (viz Příloha).
+            </td>
+          </tr>
+        </tbody></table>
+      </td>
+    </tr>
+
+    <tr><td style="padding:8px 40px;"><div style="border-top:1px solid #ece9e2;font-size:0;line-height:0;">&nbsp;</div></td></tr>
+
+    <tr>
+      <td style="padding:20px 40px 0 40px;">
+        <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+
+          <tbody><tr>
+            <td style="padding-bottom:20px;">
+              <div style="font-size:12px;letter-spacing:0.04em;text-transform:uppercase;color:#8a8578;font-family:Arial,Helvetica,sans-serif;padding-bottom:6px;">Jméno žadatele <span class="req">*</span></div>
+              <input id="jmeno-field" name="jmeno" type="text" required autocomplete="name" placeholder="Jméno a příjmení" style="width:100%;font-size:16px;color:#1c1b18;font-family:Arial,Helvetica,sans-serif;border:1px solid #e4e2dc;border-radius:0;background:#ffffff;padding:8px 10px;box-sizing:border-box;">
+            </td>
+          </tr>
+
+          <tr>
+            <td style="padding-bottom:20px;">
+              <div style="font-size:12px;letter-spacing:0.04em;text-transform:uppercase;color:#8a8578;font-family:Arial,Helvetica,sans-serif;padding-bottom:6px;">Nákladové středisko <span class="req">*</span></div>
+              <select name="stredisko" required style="width:100%;font-size:16px;color:#1c1b18;font-family:Arial,Helvetica,sans-serif;border:1px solid #e4e2dc;border-radius:0;background:#ffffff;padding:8px 10px;">
+                <option value="">Vyberte středisko…</option>
+                <option>Asset Management</option>
+                <option>Development</option>
+                <option>Education</option>
+                <option>ENG</option>
+                <option>Eventy</option>
+                <option>HR a Alumni</option>
+                <option>Jiné</option>
+                <option>Level UP</option>
+                <option>Marketing</option>
+                <option>Podcasty</option>
+                <option>Rezerva</option>
+                <option>Správa a řízení</option>
+              </select>
+            </td>
+          </tr>
+
+          <tr>
+            <td style="padding-bottom:20px;">
+              <div style="font-size:12px;letter-spacing:0.04em;text-transform:uppercase;color:#8a8578;font-family:Arial,Helvetica,sans-serif;padding-bottom:6px;">Dodavatel (firma) <span class="req">*</span></div>
+              <input name="dodavatel" type="text" required placeholder="Název firmy" style="width:100%;font-size:16px;color:#1c1b18;font-family:Arial,Helvetica,sans-serif;border:1px solid #e4e2dc;border-radius:0;background:#ffffff;padding:8px 10px;box-sizing:border-box;">
+            </td>
+          </tr>
+
+          <tr>
+            <td style="padding-bottom:20px;">
+              <div style="font-size:12px;letter-spacing:0.04em;text-transform:uppercase;color:#8a8578;font-family:Arial,Helvetica,sans-serif;padding-bottom:8px;">Stav <span class="req">*</span></div>
+              <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background:#f7f6f3;border:1px solid #ece9e2;">
+                <tbody><tr>
+                  <td style="padding:14px 16px;font-size:14px;line-height:1.6;color:#33312b;font-family:Arial,Helvetica,sans-serif;">
+                    <label style="display:block;cursor:pointer;">
+                      <input type="radio" name="stav" required value="Placeno členem – platíme členovi" style="margin-right:8px;">
+                      <b>a)</b> Placeno členem &nbsp;→&nbsp; <b>platíme členovi</b>
+                    </label>
+                    <input id="clen-field" name="clen" type="text" placeholder="Jméno člena (vyplňte u varianty a)" style="width:100%;margin-top:8px;font-size:14px;color:#1c1b18;font-family:Arial,Helvetica,sans-serif;border:1px solid #e4e2dc;border-radius:0;background:#ffffff;padding:8px 10px;box-sizing:border-box;">
+                  </td>
+                </tr>
+                <tr><td style="border-top:1px solid #ece9e2;font-size:0;line-height:0;">&nbsp;</td></tr>
+                <tr>
+                  <td style="padding:14px 16px;font-size:14px;line-height:1.6;color:#33312b;font-family:Arial,Helvetica,sans-serif;">
+                    <label style="display:block;cursor:pointer;">
+                      <input type="radio" name="stav" value="Nezaplaceno – platíme dodavateli" style="margin-right:8px;">
+                      <b>b)</b> Nezaplaceno &nbsp;→&nbsp; <b>platíme dodavateli</b>
+                    </label>
+                  </td>
+                </tr>
+              </tbody></table>
+            </td>
+          </tr>
+
+          <tr>
+            <td style="padding-bottom:20px;">
+              <div style="font-size:12px;letter-spacing:0.04em;text-transform:uppercase;color:#8a8578;font-family:Arial,Helvetica,sans-serif;padding-bottom:6px;">Datum <span class="req">*</span></div>
+              <div style="font-size:14px;color:#6b6a60;font-family:Arial,Helvetica,sans-serif;padding-bottom:6px;">splatnost, nebo datum vystavení účtenky</div>
+              <input name="datum" type="date" required style="width:100%;font-size:16px;color:#1c1b18;font-family:Arial,Helvetica,sans-serif;border:1px solid #e4e2dc;border-radius:0;background:#ffffff;padding:8px 10px;box-sizing:border-box;">
+            </td>
+          </tr>
+
+          <tr>
+            <td style="padding-bottom:20px;">
+              <div style="font-size:12px;letter-spacing:0.04em;text-transform:uppercase;color:#8a8578;font-family:Arial,Helvetica,sans-serif;padding-bottom:6px;">Celková částka včetně DPH <span class="req">*</span></div>
+              <input name="castka" type="text" required inputmode="decimal" placeholder="např. 1 250 Kč" style="width:100%;font-size:16px;color:#1c1b18;font-family:Arial,Helvetica,sans-serif;border:1px solid #e4e2dc;border-radius:0;background:#ffffff;padding:8px 10px;box-sizing:border-box;">
+            </td>
+          </tr>
+
+          <tr>
+            <td style="padding-bottom:24px;">
+              <div style="font-size:12px;letter-spacing:0.04em;text-transform:uppercase;color:#8a8578;font-family:Arial,Helvetica,sans-serif;padding-bottom:8px;">Příloha <span class="req">*</span></div>
+              <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background:#f7f6f3;border:1px dashed #cfccc2;">
+                <tbody><tr>
+                  <td style="padding:16px;font-size:14px;line-height:1.6;color:#33312b;font-family:Arial,Helvetica,sans-serif;">
+                    Faktura / účtenka &nbsp;<span style="color:#8a8578;">(+ QR na člena, pokud bylo zaplaceno – v opačném případě prázdné). Pro více souborů použijte i další pole níže. Max. 10 MB na soubor.</span>
+                    <input name="priloha1" type="file" required accept=".pdf,image/*" style="display:block;margin-top:10px;font-size:13px;font-family:Arial,Helvetica,sans-serif;">
+                    <input name="priloha2" type="file" accept=".pdf,image/*" style="display:block;margin-top:8px;font-size:13px;font-family:Arial,Helvetica,sans-serif;">
+                    <input name="priloha3" type="file" accept=".pdf,image/*" style="display:block;margin-top:8px;font-size:13px;font-family:Arial,Helvetica,sans-serif;">
+                  </td>
+                </tr>
+              </tbody></table>
+            </td>
+          </tr>
+
+          <tr>
+            <td style="padding-bottom:4px;">
+              <div style="font-size:12px;letter-spacing:0.04em;text-transform:uppercase;color:#8a8578;font-family:Arial,Helvetica,sans-serif;padding-bottom:6px;">Komentář (nepovinné)</div>
+              <textarea name="komentar" rows="3" placeholder="Cokoliv dalšího k žádosti…" style="width:100%;font-size:15px;line-height:1.5;color:#1c1b18;font-family:Arial,Helvetica,sans-serif;border:1px solid #e4e2dc;border-radius:0;background:#ffffff;padding:8px 10px;box-sizing:border-box;resize:vertical;"></textarea>
+            </td>
+          </tr>
+
+        </tbody></table>
+      </td>
+    </tr>
+
+    <tr><td style="padding:0 40px;"><div style="border-top:1px solid #ece9e2;font-size:0;line-height:0;">&nbsp;</div></td></tr>
+
+    <tr>
+      <td style="padding:24px 40px 12px 40px;">
+        <button id="submit-btn" type="submit" style="display:block;width:100%;background:#1c1b18;color:#ffffff;border:none;font-size:15px;font-weight:700;font-family:Arial,Helvetica,sans-serif;padding:14px 0;cursor:pointer;box-sizing:border-box;">Odeslat žádost</button>
+      </td>
+    </tr>
+
+    <tr>
+      <td style="padding:0 40px 36px 40px;">
+        <div id="status-box" role="status" aria-live="polite" style="display:none;margin-bottom:12px;padding:12px 14px;font-size:14px;line-height:1.5;font-family:Arial,Helvetica,sans-serif;"></div>
+        <div style="font-size:12px;line-height:1.6;color:#9a968a;font-family:Arial,Helvetica,sans-serif;">
+          Žádost i s přílohami se odešle na finance.ki@klubinvestoru.com. Odeslání může u větších příloh trvat i desítky sekund – prosím nezavírejte stránku.
+        </div>
+        <div id="fallback-box" style="display:none;margin-top:16px;background:#f7f6f3;border:1px solid #ece9e2;padding:14px 16px;font-size:13px;line-height:1.6;color:#33312b;font-family:Arial,Helvetica,sans-serif;">
+          <b>Odeslání se nepodařilo?</b> Zkuste to prosím za chvíli znovu, nebo pošlete žádost e-mailem:
+          <a id="mail-fallback" href="mailto:finance.ki@klubinvestoru.com" style="display:block;margin-top:10px;text-align:center;background:#ffffff;color:#1c1b18;border:1px solid #1c1b18;font-size:14px;font-weight:700;text-decoration:none;padding:11px 0;">Otevřít předvyplněný e-mail</a>
+          <span style="display:block;margin-top:8px;color:#8a8578;">Vyplněné údaje se do e-mailu přenesou automaticky. Fakturu / účtenku je potřeba do e-mailu <b>přiložit ručně</b>.</span>
+        </div>
+      </td>
+    </tr>
+  </tbody></table>
+</form>
+
+<div id="success-wrap" style="display:none;background:#f2f1ee;padding:32px 12px;font-family:Arial,Helvetica,sans-serif;">
+  <table id="success-card" role="presentation" cellpadding="0" cellspacing="0" border="0" align="center" width="600" style="width:600px;max-width:600px;margin:0 auto;background:#ffffff;border:1px solid #e4e2dc;">
+    <tbody><tr><td style="padding:36px 40px;">
+      <div style="font-size:13px;letter-spacing:0.08em;text-transform:uppercase;color:#2e7d32;padding-bottom:10px;">Odesláno</div>
+      <div style="font-size:26px;line-height:1.2;font-weight:700;color:#1c1b18;padding-bottom:14px;">Děkujeme, žádost byla přijata</div>
+      <div style="font-size:14px;line-height:1.6;color:#4a473f;padding-bottom:24px;">Žádost i s přílohami dorazila na finance.ki@klubinvestoru.com. Pokud bude potřeba něco doplnit, ozveme se vám.</div>
+      <button id="again-btn" type="button" style="display:block;width:100%;background:#ffffff;color:#1c1b18;border:1px solid #1c1b18;font-size:15px;font-weight:700;font-family:Arial,Helvetica,sans-serif;padding:13px 0;cursor:pointer;">Odeslat další žádost</button>
+    </td></tr></tbody>
+  </table>
+</div>
+<script>
+// ===== NASTAVENÍ =====
+// Sem vložte adresu webové aplikace z Google Apps Script (končí na /exec).
+var SCRIPT_URL = 'SEM_VLOZTE_URL_Z_APPS_SCRIPT';
+var MAX_FILE_MB = 10;   // max. velikost jednoho souboru
+var MAX_TOTAL_MB = 25;  // max. velikost všech příloh dohromady
+// =====================
+
+(function () {
+  var form = document.getElementById('root-form');
+  var btn = document.getElementById('submit-btn');
+  var statusBox = document.getElementById('status-box');
+  var fallbackBox = document.getElementById('fallback-box');
+  var clenField = document.getElementById('clen-field');
+
+  function val(name) {
+    var el = form.elements[name];
+    return el ? String(el.value || '').trim() : '';
+  }
+
+  function showStatus(kind, html) {
+    var styles = {
+      info:  'background:#f7f6f3;border:1px solid #ece9e2;color:#33312b;',
+      error: 'background:#fdecea;border:1px solid #f5c2bd;color:#8c1d18;'
+    };
+    statusBox.style.cssText = 'display:block;margin-bottom:12px;padding:12px 14px;font-size:14px;line-height:1.5;font-family:Arial,Helvetica,sans-serif;' + styles[kind];
+    statusBox.innerHTML = html;
+  }
+
+  function hideStatus() { statusBox.style.display = 'none'; }
+
+  // Jméno člena je povinné jen u varianty a)
+  function syncClenRequired() {
+    var stav = val('stav');
+    clenField.required = (stav.indexOf('Placeno členem') === 0);
+  }
+  Array.prototype.forEach.call(form.querySelectorAll('input[name="stav"]'), function (r) {
+    r.addEventListener('change', syncClenRequired);
+  });
+
+  function readFile(file) {
+    return new Promise(function (resolve, reject) {
+      var reader = new FileReader();
+      reader.onload = function () {
+        var res = String(reader.result);
+        resolve({ name: file.name, type: file.type || 'application/octet-stream', size: file.size, data: res.slice(res.indexOf(',') + 1) });
+      };
+      reader.onerror = function () { reject(new Error('Soubor „' + file.name + '“ se nepodařilo načíst.')); };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  function collectFiles() {
+    var files = [];
+    ['priloha1', 'priloha2', 'priloha3'].forEach(function (n) {
+      var el = form.elements[n];
+      if (el && el.files && el.files[0]) files.push(el.files[0]);
+    });
+    return files;
+  }
+
+  function buildFields() {
+    return {
+      jmeno: val('jmeno'),
+      stredisko: val('stredisko'),
+      dodavatel: val('dodavatel'),
+      stav: val('stav'),
+      clen: val('clen'),
+      datum: val('datum'),
+      castka: val('castka'),
+      komentar: val('komentar')
+    };
+  }
+
+  function updateMailFallback() {
+    var f = buildFields();
+    var lines = [
+      'Jméno žadatele: ' + f.jmeno,
+      'Nákladové středisko: ' + f.stredisko,
+      'Dodavatel (firma): ' + f.dodavatel,
+      'Stav: ' + f.stav,
+      'Jméno člena: ' + f.clen,
+      'Datum: ' + f.datum,
+      'Celková částka včetně DPH: ' + f.castka,
+      'Komentář: ' + f.komentar,
+      '',
+      '(Fakturu / účtenku přikládám v příloze.)'
+    ];
+    var subject = f.jmeno ? ('Faktura od ' + f.jmeno) : 'Žádost o proplacení nákladu';
+    document.getElementById('mail-fallback').href = 'mailto:finance.ki@klubinvestoru.com?subject=' +
+      encodeURIComponent(subject) + '&body=' + encodeURIComponent(lines.join('\r\n'));
+  }
+  document.getElementById('mail-fallback').addEventListener('click', updateMailFallback);
+
+  function fail(message) {
+    showStatus('error', '<b>Žádost se nepodařilo odeslat.</b> ' + message);
+    fallbackBox.style.display = 'block';
+    updateMailFallback();
+    btn.disabled = false;
+    btn.textContent = 'Odeslat žádost';
+  }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    syncClenRequired();
+    if (!form.reportValidity()) return;
+
+    var files = collectFiles();
+    var total = 0;
+    for (var i = 0; i < files.length; i++) {
+      total += files[i].size;
+      if (files[i].size > MAX_FILE_MB * 1024 * 1024) {
+        showStatus('error', 'Soubor „' + files[i].name + '“ je větší než ' + MAX_FILE_MB + ' MB. Zmenšete ho prosím (např. vyfoťte v nižším rozlišení nebo uložte jako PDF).');
+        return;
+      }
+    }
+    if (total > MAX_TOTAL_MB * 1024 * 1024) {
+      showStatus('error', 'Přílohy mají dohromady více než ' + MAX_TOTAL_MB + ' MB. Zmenšete je prosím.');
+      return;
+    }
+
+    if (SCRIPT_URL.indexOf('https://script.google.com/') !== 0) {
+      fail('Formulář zatím není propojený s Google skriptem (chybí adresa SCRIPT_URL).');
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Odesílám…';
+    fallbackBox.style.display = 'none';
+    showStatus('info', 'Odesílám žádost a přílohy, chvíli strpení…');
+
+    var controller = window.AbortController ? new AbortController() : null;
+    var timer = setTimeout(function () { if (controller) controller.abort(); }, 120000);
+
+    Promise.all(files.map(readFile)).then(function (fileData) {
+      var payload = { fields: buildFields(), files: fileData, _honey: val('_honey') };
+      return fetch(SCRIPT_URL, {
+        method: 'POST',
+        // text/plain = bez CORS preflightu, který Apps Script nepodporuje
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(payload),
+        redirect: 'follow',
+        signal: controller ? controller.signal : undefined
+      });
+    }).then(function (r) {
+      return r.json().catch(function () {
+        throw new Error('Server neodpověděl správně (kód ' + r.status + ').');
+      });
+    }).then(function (res) {
+      clearTimeout(timer);
+      if (!res || !res.ok) throw new Error(res && res.error ? res.error : 'Neznámá chyba serveru.');
+      form.style.display = 'none';
+      document.getElementById('success-wrap').style.display = 'block';
+      window.scrollTo(0, 0);
+    }).catch(function (err) {
+      clearTimeout(timer);
+      var msg = (err && err.name === 'AbortError')
+        ? 'Odesílání trvalo příliš dlouho.'
+        : (err && err.message ? err.message : 'Zkontrolujte připojení k internetu.');
+      fail(msg);
+    });
+  });
+
+  document.getElementById('again-btn').addEventListener('click', function () {
+    form.reset();
+    hideStatus();
+    fallbackBox.style.display = 'none';
+    btn.disabled = false;
+    btn.textContent = 'Odeslat žádost';
+    document.getElementById('success-wrap').style.display = 'none';
+    form.style.display = 'block';
+    window.scrollTo(0, 0);
+  });
+})();
+</script>
+
+
+</body></html>
